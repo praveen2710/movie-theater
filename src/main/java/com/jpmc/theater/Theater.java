@@ -48,7 +48,7 @@ public class Theater {
         System.out.println("Date:"+provider.currentDate().toString());
         System.out.println("===================================================");
         schedule.forEach(s ->
-                System.out.println(s.getSequenceOfTheDay() + ": " + s.getStartTime() + " " + s.getMovie().getTitle() + " " + humanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovieFee())
+                System.out.println(s.getSequenceOfTheDay() + ": " + readableTimeFormat(s.getStartTime()) + " " + s.getMovie().getTitle() + " " + humanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovieFee())
         );
         System.out.println("===================================================");
     }
@@ -70,13 +70,29 @@ public class Theater {
         }
     }
 
+    private String readableTimeFormat(LocalDateTime startTime){
+        int hour = startTime.getHour();
+        StringBuilder time = new StringBuilder();
+        if(hour<10){
+            time.append(0);
+        }
+        time.append(hour);
+        time.append(":");
+        int minute = startTime.getMinute();
+        if(minute<10){
+            time.append(0);
+        }
+        time.append(minute);
+        return time.toString();
+    }
+
     public void printScheduleJson(){
         JSONObject day = new JSONObject();
         day.put("date",provider.currentDate());
         JSONArray sch = new JSONArray();
         for(Showing showing:schedule){
             JSONObject show = new JSONObject();
-            show.put("time",showing.getStartTime().getHour()+":"+showing.getStartTime().getMinute());
+            show.put("time",readableTimeFormat(showing.getStartTime()));
             show.put("name",showing.getMovie().getTitle());
             show.put("price",showing.getMovieFee());
             show.put("duration",humanReadableFormat(showing.getMovie().getRunningTime()));
