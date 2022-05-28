@@ -4,13 +4,15 @@ import java.time.Duration;
 import java.util.Objects;
 
 public class Movie {
-    private static int MOVIE_CODE_SPECIAL = 1;
+    private final static int MOVIE_CODE_SPECIAL = 1;
+    private final static int DISCOUNT_25_START = 11;
+    private final static int DISCOUNT_25_END = 16;
 
-    private String title;
+    private final String title;
     private String description;
-    private Duration runningTime;
-    private double ticketPrice;
-    private int specialCode;
+    private final Duration runningTime;
+    private final double ticketPrice;
+    private final int specialCode;
 
     public Movie(String title, Duration runningTime, double ticketPrice, int specialCode) {
         this.title = title;
@@ -48,14 +50,18 @@ public class Movie {
         } else if (showSequence == 2) {
 
             sequenceDiscount = 2; // $2 discount for 2nd show
+        } else if (showSequence == 7){
+            sequenceDiscount = 1; // $1 discount for 7th show
         }
 
-//        else {
-//            throw new IllegalArgumentException("failed exception");
-//        }
+        double timeDiscount = 0;
+        int getStartHour = showing.getStartTime().getHour();
+        if(getStartHour>=DISCOUNT_25_START && getStartHour <= DISCOUNT_25_END){
+            timeDiscount = ticketPrice * 0.25;
+        }
 
         // biggest discount wins
-        return specialDiscount > sequenceDiscount ? specialDiscount : sequenceDiscount;
+        return Math.max(specialDiscount,Math.max(sequenceDiscount,timeDiscount));
     }
 
     @Override
