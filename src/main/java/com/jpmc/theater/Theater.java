@@ -45,7 +45,7 @@ public class Theater {
     }
 
     public void printSchedule() {
-        System.out.println(provider.currentDate());
+        System.out.println("Date:"+provider.currentDate().toString());
         System.out.println("===================================================");
         schedule.forEach(s ->
                 System.out.println(s.getSequenceOfTheDay() + ": " + s.getStartTime() + " " + s.getMovie().getTitle() + " " + humanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovieFee())
@@ -71,16 +71,19 @@ public class Theater {
     }
 
     public void printScheduleJson(){
-        JSONArray ja = new JSONArray();
+        JSONObject day = new JSONObject();
+        day.put("date",provider.currentDate());
+        JSONArray sch = new JSONArray();
         for(Showing showing:schedule){
-            JSONObject jo = new JSONObject();
-            jo.put("time",showing.getStartTime());
-            jo.put("name",showing.getMovie().getTitle());
-            jo.put("price",showing.getMovieFee());
-            jo.put("duration",humanReadableFormat(showing.getMovie().getRunningTime()));
-            ja.put(jo);
+            JSONObject show = new JSONObject();
+            show.put("time",showing.getStartTime().getHour()+":"+showing.getStartTime().getMinute());
+            show.put("name",showing.getMovie().getTitle());
+            show.put("price",showing.getMovieFee());
+            show.put("duration",humanReadableFormat(showing.getMovie().getRunningTime()));
+            sch.put(show);
         }
-        System.out.println(ja.toString(4));
+        day.put("schedule",sch);
+        System.out.println(day.toString(4));
     }
 
     public static void main(String[] args) {

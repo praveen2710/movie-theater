@@ -4,6 +4,11 @@ import java.time.LocalDate;
 
 public class LocalDateProvider {
     private static LocalDateProvider instance = null;
+    private final LocalDate currentDate;
+
+    private LocalDateProvider(){
+        currentDate = LocalDate.now();
+    }
 
     /**
      * @return make sure to return singleton instance
@@ -16,6 +21,6 @@ public class LocalDateProvider {
         }
 
     public LocalDate currentDate() {
-            return LocalDate.now();
+            return instance.currentDate;
     }
 }
