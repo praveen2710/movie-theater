@@ -18,7 +18,7 @@ public class MovieTests {
     }
 
     @Test
-    void testTimedDiscount(){
+    void testTimed25PercentDiscount(){
         var customer = new Customer("John Doe", "unused-id");
         int audienceCount = 3;
         Movie movie =  new Movie("Turning Red", Duration.ofMinutes(85), 11, 0);
