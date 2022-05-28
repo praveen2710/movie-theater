@@ -19,4 +19,10 @@ public class TheaterTests {
         Theater theater = new Theater(LocalDateProvider.singleton());
         theater.printSchedule();
     }
+
+    @Test
+    void printMovieScheduleJson(){
+        Theater theater = new Theater(LocalDateProvider.singleton());
+        theater.printScheduleJson();
+    }
 }

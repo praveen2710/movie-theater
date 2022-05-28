@@ -1,5 +1,8 @@
 package com.jpmc.theater;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,9 +14,9 @@ public class Theater {
     LocalDateProvider provider;
     private List<Showing> schedule;
 
+
     public Theater(LocalDateProvider provider) {
         this.provider = provider;
-
         Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1);
         Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), 11, 0);
         Movie theBatMan = new Movie("The Batman", Duration.ofMinutes(95), 9, 0);
@@ -65,6 +68,19 @@ public class Theater {
         else {
             return "s";
         }
+    }
+
+    public void printScheduleJson(){
+        JSONArray ja = new JSONArray();
+        for(Showing showing:schedule){
+            JSONObject jo = new JSONObject();
+            jo.put("time",showing.getStartTime());
+            jo.put("name",showing.getMovie().getTitle());
+            jo.put("price",showing.getMovieFee());
+            jo.put("duration",humanReadableFormat(showing.getMovie().getRunningTime()));
+            ja.put(jo);
+        }
+        System.out.println(ja.toString(4));
     }
 
     public static void main(String[] args) {
